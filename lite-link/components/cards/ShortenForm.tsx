@@ -1,9 +1,11 @@
 "use client"
 
 import React, { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Spinner } from "@/components/ui/spinner"
 import { Pointer } from "lucide-react"
+import Link from "next/link"
 
 type Props = { compact?: boolean }
 
@@ -12,6 +14,15 @@ export default function ShortenForm({ compact = false }: Props) {
   const [loading, setLoading] = useState(false)
   const [result, setResult] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
+  const router = useRouter()
+
+
+  const handleCustomize = () => {
+    if (result) {
+      const slug = result?.split("/").slice(-1)[0] ?? null
+      router.push(`/customize-url?url=${encodeURIComponent(slug)}`)
+    }
+  }
 
   async function handleSubmit(e?: React.FormEvent) {
     if (e) e.preventDefault()
@@ -21,6 +32,12 @@ export default function ShortenForm({ compact = false }: Props) {
 
     try {
       setLoading(true)
+      // if .onrender.com in input, url already shortened
+      if (input.includes(".onrender.com")) {
+        alert("This URL appears to be already shortened. No need to shorten again!")
+        setResult(input)
+        return
+      }
       const API_BASE_URL = process.env.NEXT_PUBLIC_SHORTEN_API
       const res = await fetch(`${API_BASE_URL}/shorten-url`, {
         method: "POST",
@@ -149,10 +166,12 @@ export default function ShortenForm({ compact = false }: Props) {
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, rowGap: 8 }} className="sm:gap-3 md:gap-3">
-            <Button variant="outline" onClick={() => alert("Customize - API not configured yet")} className="h-8 sm:h-9 px-2 sm:px-3 text-xs sm:text-sm"> 
-              {/* @ts-ignore */}
-              <iconify-icon icon="lucide:wand-2" style={{ fontSize: 16, color: "var(--muted-foreground)" }}></iconify-icon>
-              <span className="hidden sm:inline">Customize</span>
+            <Button asChild variant="outline" onClick={handleCustomize} className="h-8 sm:h-9 px-2 sm:px-3 text-xs sm:text-sm"> 
+              <Link href={`/customize-url?url=${encodeURIComponent(result ?? "")}`}>
+                {/* @ts-ignore */}
+                <iconify-icon icon="lucide:wand-2" style={{ fontSize: 16, color: "var(--muted-foreground)" }}></iconify-icon>
+                <span className="hidden sm:inline">Customize</span>
+              </Link>
             </Button>
             <Button variant="outline" onClick={() => alert("Generate QR - API not configured yet")} className="h-8 sm:h-9 px-2 sm:px-3 text-xs sm:text-sm"> 
               {/* @ts-ignore */}
