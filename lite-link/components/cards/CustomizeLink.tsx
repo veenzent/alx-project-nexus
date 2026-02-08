@@ -26,6 +26,7 @@ export default function CustomizeLink() {
   const handleUpdate = async () => {
     if (!slug) return alert("Slug cannot be empty")
     if (!/^[a-zA-Z0-9-]+$/.test(slug)) return alert("Slug can only contain letters, numbers, and dashes")
+    if (slug === key) return alert("New slug is the same as the current one")
 
     try {
       setStatus("saving")
