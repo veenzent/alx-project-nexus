@@ -1,5 +1,6 @@
 "use client"
 
+import { Suspense } from "react"
 import React from "react"
 import CustomizeLink from "@/components/cards/CustomizeLink"
 import Navbar from "@/components/layout/Navbar"
@@ -11,7 +12,9 @@ export default function Page() {
     <main className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
       <Navbar />
       <div className="grow">
-        <CustomizeLink />
+        <Suspense fallback={<div className="text-center py-8">Loading...</div>}>
+          <CustomizeLink />
+        </Suspense>
       </div>
       <Footer />
     </main>
