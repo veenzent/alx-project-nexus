@@ -1,5 +1,7 @@
 "use client"
 
+export const dynamic = "force-dynamic"
+
 import { Suspense } from "react"
 import React from "react"
 import CustomizeLink from "@/components/cards/CustomizeLink"

@@ -1,7 +1,6 @@
 "use client"
 
-import { Suspense } from "react"
-import React, { useEffect, useState } from "react"
+import React, { Suspense, useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 
 export default function CustomizeLink() {
@@ -68,7 +67,7 @@ export default function CustomizeLink() {
   }
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
+    <Suspense fallback={<div className="text-center py-8">Loading...</div>}>
       <div className="w-full px-4 py-8 flex items-center justify-center">
         <div className="w-full max-w-md md:max-w-lg bg-white border border-gray-200 rounded-xl shadow-sm overflow-hidden">
           <div className="flex items-center justify-between px-4 py-3 cursor-pointer select-none hover:bg-gray-50">
